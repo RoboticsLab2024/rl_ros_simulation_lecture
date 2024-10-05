@@ -15,10 +15,11 @@ controller_manager:
 position_controller:
   ros__parameters:
     joints:
-      - giunto_1
-      - giunto_2
-      - giunto_3
-      
+      - j0
+      - j1
+      - j2
+      - j3
+ 
     command_interfaces:
       - position
       - velocity
@@ -26,10 +27,10 @@ position_controller:
 joint_trajectory_controller:
   ros__parameters:
     joints:
-      - giunto_1
-      - giunto_2
-      - giunto_3
-      
+      - j0
+      - j1
+      - j2
+      - j3
       
     command_interfaces:
       - position
@@ -39,10 +40,6 @@ joint_trajectory_controller:
       - position
       - velocity
 
-    gains:
-      giunto_1: {p: 100.0, i: 0.0, d: 10.0, i_clamp_max: 5.0, i_clamp_min: -5.0}
-      giunto_2: {p: 100.0, i: 0.0, d: 10.0, i_clamp_max: 5.0, i_clamp_min: -5.0}
-      giunto_3: {p: 100.0, i: 0.0, d: 10.0, i_clamp_max: 5.0, i_clamp_min: -5.0} 
 
     state_publish_rate: 100.0
     action_monitor_rate: 20.0 # Defaults to 20

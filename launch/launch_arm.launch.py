@@ -12,9 +12,18 @@ from launch.actions import (
 )
 from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessExit
+import xacro
+from launch.conditions import IfCondition, UnlessCondition
+
+
+def to_bool(value):
+        return value.lower() in ["true", "1", "yes", "y", "vero", "v"]
 
 def generate_launch_description():
     declared_arguments = []
+
+    arm_description_path = os.path.join(
+        get_package_share_directory('arm_description'))
 
     declared_arguments.append(
         DeclareLaunchArgument(
@@ -25,21 +34,39 @@ def generate_launch_description():
             description="RViz config file (absolute path) to use when launching rviz.",
         )
     )
- 
-    urdf_path = os.path.join(
-        get_package_share_directory('arm_description'), "urdf", "arm.urdf"
-    )
-    with open(urdf_path, 'r') as infp:
-        robot_desc = infp.read()
-    
-    description_file = LaunchConfiguration("description_file") #this is the path
- 
-
-    rviz_config = os.path.join(
-        get_package_share_directory('arm_description'), "config", "rviz", "standing.rviz"
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'config',
+            default_value= os.path.join(
+                arm_description_path,
+                'config',
+                'pos_controller.yaml'
+            ),
+            description='YAML configuration file'
+        ),
     )
 
-    robot_description = {"robot_description": robot_desc}  
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            'anymal',
+            default_value='false',
+            description='YAML configuration file'
+        ),
+    )
+  
+    urdf_arm = os.path.join(arm_description_path, "urdf", "arm.urdf.xacro")
+    urdf_anymal = os.path.join(arm_description_path, "urdf", "anymal.urdf.xacro")
+
+    rviz_config = os.path.join(arm_description_path, "config", "rviz", "standing.rviz")
+
+    """with open(urdf_arm, 'r') as infp:
+        arm_desc = infp.read()
+
+    with open(urdf_anymal, 'r') as infp:
+        anymal_desc = infp.read()  #If you use the xacro command you don't need to read the file anymore"""
+
+    robot_description_arm = {"robot_description": Command(['xacro ', urdf_arm, " pos_j2:=", "-2.2"])}  
+    robot_description_anymal = {"robot_description": Command(['xacro ', urdf_anymal])}
 
     joint_state_publisher_node = Node(
         package="joint_state_publisher_gui",
@@ -50,11 +77,24 @@ def generate_launch_description():
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="both",
-        parameters=[robot_description,
-                {"use_sim_time": True}
+        parameters=[robot_description_arm,
+                    {"use_sim_time": True},
             ],
+        condition=UnlessCondition(LaunchConfiguration('anymal')),
         remappings=[('/robot_description', '/robot_description')]
     )
+
+    robot_state_publisher_node_anymal = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="both",
+        parameters=[robot_description_anymal,
+                    {"use_sim_time": True},
+            ],
+        condition=IfCondition(LaunchConfiguration('anymal')),
+        remappings=[('/robot_description', '/robot_description')]
+    )
+
 
     rviz_node = Node(
         package="rviz2",
@@ -76,14 +116,14 @@ def generate_launch_description():
             launch_arguments={'gz_args': LaunchConfiguration('gz_args')}.items()
     )
 
-    position = [0.0, 0.0, 0.5]
+    position = [0.0, 0.0, 0.65]
 
     gz_spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
         output='screen',
         arguments=['-topic', 'robot_description',
-                   '-name', 'monopod',
+                   '-name', 'arm',
                    '-allow_renaming', 'true',
                     "-x", str(position[0]),
                     "-y", str(position[1]),
@@ -113,22 +153,6 @@ def generate_launch_description():
 
     classic = [gazebo_classic, gazeboClassic_spawn_robot]
 
-
-    
-    robot_controllers = PathJoinSubstitution([FindPackageShare("arm_description"), "config", "pos_controller.yaml",])
-
-    #Controller manager load the controllers defined in the yaml file
-    control_node = Node(
-        package="controller_manager",
-        executable="ros2_control_node", 
-        name='controller_manager',
-        parameters=[robot_controllers],
-        output="both",
-        remappings=[
-            ("~/robot_description", "/robot_description"),
-        ],
-    )
-
     joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
@@ -138,9 +162,10 @@ def generate_launch_description():
     joint_trajectory_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_trajectory_controller", "--controller-manager", "/controller_manager", "--controller-manager-timeout", "20"],  
+        arguments=["joint_trajectory_controller", "--controller-manager", "/controller_manager"],  
     ) 
 
+    #Launch the ros2 controllers after the model spawns in Gazebo 
     delay_joint_traj_controller = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=gz_spawn_entity,
@@ -172,17 +197,14 @@ def generate_launch_description():
 
     nodes_to_start = [
         joint_state_publisher_node,
-        robot_state_publisher_node, #publish pose of each link and transformation to know ehre the robot is
-        rviz_node,
+        robot_state_publisher_node,  
+        robot_state_publisher_node_anymal,
         *ign,
-        bridge_camera
-        #control_node, #if your hardware interface is the simulator, the ros-control will be the one specified in the plugin gazebo, 
-        #joint_trajectory_controller,
-        #joint_state_broadcaster, #publish the state of the robot as sensor-masgs for control (like the joints pos e vel)
-        #delay_joint_traj_controller, #ros controller chosen. I could also use a psition controller
-        #delay_joint_state_broadcaster
+        bridge_camera,
+        delay_joint_traj_controller, 
+        delay_joint_state_broadcaster
     ]
     
     """In rviz, quando selezioni il modello, devi mettere il topic /robot_descriptio in Description topic"""
 
-    return LaunchDescription(declared_arguments + nodes_to_start) #its argument must to be a list
+    return LaunchDescription(declared_arguments + nodes_to_start) 
