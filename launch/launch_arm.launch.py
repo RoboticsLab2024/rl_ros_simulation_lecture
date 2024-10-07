@@ -16,6 +16,8 @@ import xacro
 from launch.conditions import IfCondition, UnlessCondition
 
 
+iiwa = True
+
 def to_bool(value):
         return value.lower() in ["true", "1", "yes", "y", "vero", "v"]
 
@@ -56,7 +58,7 @@ def generate_launch_description():
   
     urdf_arm = os.path.join(arm_description_path, "urdf", "arm.urdf.xacro")
     urdf_anymal = os.path.join(arm_description_path, "urdf", "anymal.urdf.xacro")
-
+    urdf_iiwa = os.path.join(arm_description_path, "urdf", "iiwa.urdf.xacro")
     rviz_config = os.path.join(arm_description_path, "config", "rviz", "standing.rviz")
 
     """with open(urdf_arm, 'r') as infp:
@@ -67,22 +69,35 @@ def generate_launch_description():
 
     robot_description_arm = {"robot_description": Command(['xacro ', urdf_arm, " pos_j2:=", "-2.2"])}  
     robot_description_anymal = {"robot_description": Command(['xacro ', urdf_anymal])}
+    robot_description_iiwa = {"robot_description": Command(['xacro ', urdf_iiwa])}
 
     joint_state_publisher_node = Node(
         package="joint_state_publisher_gui",
         executable="joint_state_publisher_gui",
     )
-
-    robot_state_publisher_node = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        output="both",
-        parameters=[robot_description_arm,
-                    {"use_sim_time": True},
-            ],
-        condition=UnlessCondition(LaunchConfiguration('anymal')),
-        remappings=[('/robot_description', '/robot_description')]
-    )
+    
+    if(iiwa):
+        robot_state_publisher_node = Node(
+            package="robot_state_publisher",
+            executable="robot_state_publisher",
+            output="both",
+            parameters=[robot_description_iiwa,
+                        {"use_sim_time": True},
+                ],
+            condition=UnlessCondition(LaunchConfiguration('anymal')),
+            remappings=[('/robot_description', '/robot_description')]
+        )
+    else:
+        robot_state_publisher_node = Node(
+            package="robot_state_publisher",
+            executable="robot_state_publisher",
+            output="both",
+            parameters=[robot_description_arm,
+                        {"use_sim_time": True},
+                ],
+            condition=UnlessCondition(LaunchConfiguration('anymal')),
+            remappings=[('/robot_description', '/robot_description')]
+        )
 
     robot_state_publisher_node_anymal = Node(
         package="robot_state_publisher",
