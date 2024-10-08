@@ -16,7 +16,7 @@ import xacro
 from launch.conditions import IfCondition, UnlessCondition
 
 
-iiwa = True
+iiwa = False
 
 def to_bool(value):
         return value.lower() in ["true", "1", "yes", "y", "vero", "v"]
@@ -67,7 +67,7 @@ def generate_launch_description():
     with open(urdf_anymal, 'r') as infp:
         anymal_desc = infp.read()  #If you use the xacro command you don't need to read the file anymore"""
 
-    robot_description_arm = {"robot_description": Command(['xacro ', urdf_arm, " pos_j2:=", "-2.2"])}  
+    robot_description_arm = {"robot_description": Command(['xacro ', urdf_arm, " pos_j2:=", "1.75"])}  
     robot_description_anymal = {"robot_description": Command(['xacro ', urdf_anymal])}
     robot_description_iiwa = {"robot_description": Command(['xacro ', urdf_iiwa])}
 
