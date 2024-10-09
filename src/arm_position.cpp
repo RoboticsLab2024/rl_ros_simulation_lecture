@@ -5,60 +5,119 @@
 #include <geometry_msgs/msg/twist.hpp>
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 
+#include <trajectory_msgs/msg/joint_trajectory_point.hpp>
+
 using namespace std::chrono_literals;
+
+
+enum class RobotType {
+    ANYMAL,
+    IIWA,
+    ARMANDO
+};
+
+
+std::vector<std::string> getJointNames(RobotType robotype){
+
+	if(robotype == RobotType::ANYMAL)
+		return  {"LF_HAA", "LF_HFE", "LF_KFE", "RF_HAA", "RF_HFE", "RF_KFE", "LH_HAA", "LH_HFE", "LH_KFE", "RH_HAA", "RH_HFE", "RH_KFE"};
+	else if(robotype == RobotType::IIWA)
+		return {"joint_a1", "joint_a2", "joint_a3", "joint_a4", "joint_a5", "joint_a6", "joint_a7"};
+	else if(robotype == RobotType::ARMANDO)
+		return {"j0", "j1", "j2", "j3"};
+
+}
+
+
+void setPoints(trajectory_msgs::msg::JointTrajectoryPoint *point, const std::vector<float> &joints_value, const std::vector<std::string> &jointNames){
+	
+	std::vector<std::string> jointNames_string(std::begin(jointNames), std::end(jointNames));
+	point->positions.resize(jointNames_string.size());
+
+	int i = 0;
+	for(const auto & j:joints_value){
+		point->positions[i] = j;
+		i++;
+	}
+
+}
 
 
 int main(int argc, char * argv[])
 {
-  rclcpp::init(argc, argv);
+	
+	rclcpp::init(argc, argv);
 
-  std::shared_ptr<rclcpp::Node> node =
-    std::make_shared<rclcpp::Node>("arm_test");
+	std::vector<float> joints_value;
+	for(int i = 0; i<argc-2; i++){
+		try {
+			joints_value.push_back(std::stof(argv[i+2]));
+		}catch (const std::invalid_argument& e) {
+            std::cerr << "Invalid argument: " << argv[i + 2] << " is not a valid float." << std::endl;
+            return 1;
+		}
+	}
 
-  auto publisher = node->create_publisher<trajectory_msgs::msg::JointTrajectory>(
-    "/joint_trajectory_controller/joint_trajectory", 10);
+    RobotType robotType = RobotType::ARMANDO;
 
-  RCLCPP_INFO(node->get_logger(), "node created");
+	std::string argv1 = argv[1]; //to prevent warnings
+	if(argv1=="iiwa")
+		robotType = RobotType::IIWA;
+	else if(argv1=="anymal")
+		robotType = RobotType::ANYMAL;
+	else if(argv1=="armando" || std::string(argv[1]).empty())
+		robotType = RobotType::ARMANDO;
+	
 
+	std::shared_ptr<rclcpp::Node> node = std::make_shared<rclcpp::Node>("arm_test");
 
-  trajectory_msgs::msg::JointTrajectory command;
+	auto publisher = node->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+		"/joint_trajectory_controller/joint_trajectory", 10);
 
-    command.joint_names = {"j0", "j1", "j2", "j3"};
-
-    std::vector<std::string> joint_names = {"j0", "j1", "j2", "j3"};
-    command.joint_names = joint_names;
-
-    command.points.resize(1);
-    command.points[0].positions.resize(joint_names.size());
-
-    command.points[0].positions[0] = 0.2;
-    command.points[0].positions[1] = 0.2;
-    command.points[0].positions[2] = 0.2;
-    command.points[0].positions[3] = 0.2;
-
-    command.points[0].time_from_start = rclcpp::Duration::from_seconds(0.0);  // start asap
-
-    while (1) {
-        publisher->publish(command);
-        RCLCPP_INFO(node->get_logger(), "sending");
-        std::this_thread::sleep_for(50ms);
-        rclcpp::spin_some(node);
-    }
+	RCLCPP_INFO(node->get_logger(), "node created");
 
 
-  rclcpp::shutdown();
+	trajectory_msgs::msg::JointTrajectory command;
+	trajectory_msgs::msg::JointTrajectoryPoint point;
 
-  return 0;
+	std::vector<std::string> jointNames = getJointNames(robotType);
+
+	command.joint_names = jointNames;
+
+	command.points.resize(1); //we dont have a set of set points, but just once.
+	command.points[0].positions.resize(jointNames.size());
+
+	setPoints(&point, joints_value, jointNames);
+
+	/*command.points[0].positions[0] = 0.2;
+	command.points[0].positions[1] = 0.2;
+	command.points[0].positions[2] = 0.2;
+	command.points[0].positions[3] = 0.2;*/
+	command.points[0] = point;
+
+	command.points[0].time_from_start = rclcpp::Duration::from_seconds(1.0);  // start asap
+
+	while (1) {
+			publisher->publish(command);
+			RCLCPP_INFO(node->get_logger(), "sending");
+			std::this_thread::sleep_for(50ms);
+			rclcpp::spin_some(node);
+	}
+
+
+	rclcpp::shutdown();
+
+	return 0;
 }
 /*ros2 topic pub -r 10 /joint_trajectory_controller/joint_trajectory trajectory_msgs/msg/JointTrajectory "{
-  header: {
-    stamp: { sec: 0, nanosec: 0 },
-    frame_id: ''
-  },
-  joint_names: ['j0', 'j1'],
-  points: [{
-    positions: [0.0, 0.2],
-    velocities: [],
-    time_from_start: { sec: 1, nanosec: 0 }
-  }]
+	header: {
+		stamp: { sec: 0, nanosec: 0 },
+		frame_id: ''
+	},
+	joint_names: ['LF_HAA', 'LF_KFE'],
+	points: [{
+		positions: [0.0, 0.2],
+		velocities: [],
+		time_from_start: { sec: 1, nanosec: 0 }
+	}]
 }"*/

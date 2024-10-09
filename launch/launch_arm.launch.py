@@ -180,11 +180,18 @@ def generate_launch_description():
         arguments=["joint_trajectory_controller", "--controller-manager", "/controller_manager"],  
     ) 
 
+    joint_pos_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_position_controller", "--controller-manager", "/controller_manager"],  
+    ) 
+
+
     #Launch the ros2 controllers after the model spawns in Gazebo 
     delay_joint_traj_controller = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=gz_spawn_entity,
-            on_exit=[joint_trajectory_controller],
+            on_exit=[joint_pos_controller],
         )
     )
 
