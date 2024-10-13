@@ -16,11 +16,7 @@ import xacro
 from launch.conditions import IfCondition, UnlessCondition
 
 
-iiwa = True
-
-def to_bool(value):
-        return value.lower() in ["true", "1", "yes", "y", "vero", "v"]
-
+ 
 def generate_launch_description():
     declared_arguments = []
 
@@ -31,7 +27,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "rviz_config_file", #this will be the name of the argument  
             default_value=PathJoinSubstitution(
-                [FindPackageShare("arm_description"), "config", "rviz", "standing.rviz"]
+                [FindPackageShare("arm_description"), "config", "rviz", "iiwa.rviz"]
             ),
             description="RViz config file (absolute path) to use when launching rviz.",
         )
@@ -55,12 +51,10 @@ def generate_launch_description():
             description='YAML configuration file'
         ),
     )
-    urdf_arm = os.path.join(arm_description_path, "urdf", "arm.urdf.xacro")
-    urdf_anymal = os.path.join(arm_description_path, "urdf", "anymal.urdf.xacro")
-    urdf_iiwa = os.path.join(arm_description_path, "urdf", "iiwa.urdf.xacro")
-    urdf_ur = os.path.join(arm_description_path, "urdf", "ur.urdf.xacro")
 
-    rviz_config = os.path.join(arm_description_path, "config", "rviz", "standing.rviz")
+    urdf_iiwa = os.path.join(arm_description_path, "urdf", "iiwa.urdf.xacro")
+ 
+    rviz_config = os.path.join(arm_description_path, "config", "rviz", "iiwa.rviz")
 
     """with open(urdf_arm, 'r') as infp:
         arm_desc = infp.read()
@@ -68,66 +62,25 @@ def generate_launch_description():
     with open(urdf_anymal, 'r') as infp:
         anymal_desc = infp.read()  #If you use the xacro command you don't need to read the file anymore"""
 
-    robot_description_arm = {"robot_description": Command(['xacro ', urdf_arm])}  
-    robot_description_anymal = {"robot_description": Command(['xacro ', urdf_anymal])}
-
-    robot_description_content = Command(
-        [
-            "xacro",
-            " ",
-            urdf_ur,
-            " ",
-            "safety_limits:=",
-            "true",
-            " ",
-            "safety_pos_margin:=",
-            "0.15",
-            " ",
-            "safety_k_position:=",
-            "20",
-            " ",
-            "name:=",
-            "ur",
-            " ",
-            "ur_type:=",
-            "ur5e",
-            " ",
-            "tf_prefix:=",
-            "",
-        ]
-    )
-
-    robot_description_ur = {"robot_description": robot_description_content}
-
+    robot_description_iiwa = {"robot_description": Command(['xacro ', urdf_iiwa])}
+ 
     joint_state_publisher_node = Node(
         package="joint_state_publisher_gui",
         executable="joint_state_publisher_gui",
     )
     
+   
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="both",
-        parameters=[robot_description_arm,
+        parameters=[robot_description_iiwa,
                     {"use_sim_time": True},
             ],
         condition=UnlessCondition(LaunchConfiguration('anymal')),
         remappings=[('/robot_description', '/robot_description')]
     )
- 
-
-    robot_state_publisher_node_anymal = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        output="both",
-        parameters=[robot_description_anymal,
-                    {"use_sim_time": True},
-            ],
-        condition=IfCondition(LaunchConfiguration('anymal')),
-        remappings=[('/robot_description', '/robot_description')]
-    )
-
-
+    
     rviz_node = Node(
         package="rviz2",
         executable="rviz2",
@@ -155,7 +108,7 @@ def generate_launch_description():
         executable='create',
         output='screen',
         arguments=['-topic', 'robot_description',
-                   '-name', 'arm',
+                   '-name', 'iiwa',
                    '-allow_renaming', 'true',
                     "-x", str(position[0]),
                     "-y", str(position[1]),
@@ -207,7 +160,7 @@ def generate_launch_description():
     #Launch the ros2 controllers after the model spawns in Gazebo 
     delay_joint_traj_controller = RegisterEventHandler(
         event_handler=OnProcessExit(
-            target_action=joint_state_broadcaster,
+            target_action=gz_spawn_entity,
             on_exit=[joint_trajectory_controller],
         )
     )
@@ -237,11 +190,11 @@ def generate_launch_description():
     nodes_to_start = [
         #joint_state_publisher_node,
         robot_state_publisher_node,  
-        robot_state_publisher_node_anymal,
         *ign,
         bridge_camera,
         delay_joint_traj_controller, 
         delay_joint_state_broadcaster,
+        rviz_node
     ]
 
 

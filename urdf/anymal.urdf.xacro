@@ -1432,20 +1432,20 @@
   </hardware>
     
   <xacro:joint_ros2_control name="LF_HAA" initial_pos="0.0"/>   
-  <xacro:joint_ros2_control name="LF_HFE" initial_pos="0.0"/>   
-  <xacro:joint_ros2_control name="LF_KFE" initial_pos="0.0"/>   
+  <xacro:joint_ros2_control name="LF_HFE" initial_pos="0.03"/>   
+  <xacro:joint_ros2_control name="LF_KFE" initial_pos="0.4"/>   
 
-  <xacro:joint_ros2_control name="RF_HAA" initial_pos="0.0"/>   
-  <xacro:joint_ros2_control name="RF_HFE" initial_pos="0.0"/>   
-  <xacro:joint_ros2_control name="RF_KFE" initial_pos="0.0"/>   
+  <xacro:joint_ros2_control name="RF_HAA" initial_pos="-0.8"/>   
+  <xacro:joint_ros2_control name="RF_HFE" initial_pos="-0.03"/>   
+  <xacro:joint_ros2_control name="RF_KFE" initial_pos="0.4"/>   
 
-  <xacro:joint_ros2_control name="LH_HAA" initial_pos="0.0"/>    
-  <xacro:joint_ros2_control name="LH_HFE" initial_pos="0.0"/>    
-  <xacro:joint_ros2_control name="LH_KFE" initial_pos="0.0"/>    
+  <xacro:joint_ros2_control name="LH_HAA" initial_pos="-0.8"/>    
+  <xacro:joint_ros2_control name="LH_HFE" initial_pos="0.03"/>    
+  <xacro:joint_ros2_control name="LH_KFE" initial_pos="-0.4"/>    
 
-  <xacro:joint_ros2_control name="RH_HAA" initial_pos="0.0"/>    
-  <xacro:joint_ros2_control name="RH_HFE" initial_pos="0.0"/>    
-  <xacro:joint_ros2_control name="RH_KFE" initial_pos="0.0"/>    
+  <xacro:joint_ros2_control name="RH_HAA" initial_pos="0.8"/>    
+  <xacro:joint_ros2_control name="RH_HFE" initial_pos="-0.03"/>    
+  <xacro:joint_ros2_control name="RH_KFE" initial_pos="-0.4"/>    
 
 </ros2_control>
  

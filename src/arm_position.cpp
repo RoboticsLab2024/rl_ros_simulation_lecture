@@ -6,6 +6,7 @@
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 
 #include <trajectory_msgs/msg/joint_trajectory_point.hpp>
+#include <sstream>
 
 using namespace std::chrono_literals;
 
@@ -97,9 +98,15 @@ int main(int argc, char * argv[])
 
 	command.points[0].time_from_start = rclcpp::Duration::from_seconds(1.0);  // start asap
 
+	std::ostringstream oss;
+	for (const auto& val : joints_value) {
+		oss << val << ", ";
+	}
+
+
 	while (1) {
 			publisher->publish(command);
-			RCLCPP_INFO(node->get_logger(), "sending");
+			RCLCPP_INFO(node->get_logger(), "sending: [%s]", oss.str().c_str());
 			std::this_thread::sleep_for(50ms);
 			rclcpp::spin_some(node);
 	}

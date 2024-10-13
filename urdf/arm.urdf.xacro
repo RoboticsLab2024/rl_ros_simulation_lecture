@@ -2,12 +2,18 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arm">
 
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+
+
   <link name="base_link">
     <visual>
       <geometry>
         <mesh filename="package://arm_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="red"/>
     </visual>
     <collision>
       <geometry>
@@ -45,7 +51,7 @@
       <inertia ixx="1.35223008e+07" ixy="0.0" ixz="0.0" iyy="8.13814925e+06" iyz="0.0" izz="2.14903814e+07"/>
     </inertial>
   </link>
-  
+ 
   <joint name="j0" type="revolute">
     <parent link="base_turn"/>
     <child link="base_turn_rot"/>
@@ -70,7 +76,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="3.41992001e+06" ixy="0.0" ixz="0.0" iyy="2.85587836e+06" iyz="0.0" izz="5.84313870e+06"/>
+      <inertia ixx="3.41992001" ixy="0.0" ixz="0.0" iyy="2.85587836" iyz="0.0" izz="5.84313870"/>
     </inertial>
   </link>
   
@@ -96,7 +102,7 @@
     </collision>
      <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e+01" ixy="0.0" ixz="0.0" iyy="1.24554875e+02" iyz="0.0" izz="1.04295793e+02"/>
+      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
     </inertial>
   </link>
   
@@ -136,7 +142,7 @@
     </collision>
      <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e+01" ixy="0.0" ixz="0.0" iyy="1.24554875e+02" iyz="0.0" izz="1.04295793e+02"/>
+      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
     </inertial>
   </link>
   
@@ -161,7 +167,7 @@
     </collision>
      <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e+01" ixy="0.0" ixz="0.0" iyy="1.24554875e+02" iyz="0.0" izz="1.04295793e+02"/>
+      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
     </inertial>
   </link>
   
@@ -173,8 +179,8 @@
     <limit effort="300" velocity="0.1" lower="-3.14" upper="3.14"/>
   </joint>
   
-  <link name="dyn3_r">
-    
+ <link name="dyn3_r">
+
   </link>
   
   <joint name="dyn3_f5" type="fixed">
@@ -202,15 +208,14 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="1.13130695e+07" ixy="0.0" ixz="0.0" iyy="8.78052401e+06" iyz="0.0" izz="1.72940286e+07"/>
-    </inertial>
+  <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>    </inertial>
   </link>
   
   <joint name="f5_dyn4" type="fixed">
     <parent link="f5"/>
     <child link="dyn4"/>
     <origin xyz="-0.004 0.065 -0.0" rpy="-1.57 3.1415 1.57 "/>
-  </joint>
+  </joint> 
   
   <link name="dyn4">
     <visual>
@@ -229,7 +234,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e+01" ixy="0.0" ixz="0.0" iyy="1.24554875e+02" iyz="0.0" izz="1.04295793e+02"/>
+      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
     </inertial>
   </link>
   
@@ -270,7 +275,7 @@
     
      <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e+01" ixy="0.0" ixz="0.0" iyy="1.24554875e+02" iyz="0.0" izz="1.04295793e+02"/>
+      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
     </inertial>
   </link>
   
@@ -296,7 +301,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e+01" ixy="0.0" ixz="0.0" iyy="1.24554875e+02" iyz="0.0" izz="1.04295793e+02"/>
+      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
     </inertial>
   </link>
  
@@ -337,7 +342,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e+01" ixy="0.0" ixz="0.0" iyy="1.24554875e+02" iyz="0.0" izz="1.04295793e+02"/>
+      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
     </inertial>
   </link>
     
@@ -366,7 +371,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e+01" ixy="0.0" ixz="0.0" iyy="1.24554875e+02" iyz="0.0" izz="1.04295793e+02"/>
+      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
     </inertial>
   </link>
   
@@ -396,7 +401,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e+01" ixy="0.0" ixz="0.0" iyy="1.24554875e+02" iyz="0.0" izz="1.04295793e+02"/>
+      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
     </inertial>
   </link>
 
@@ -490,7 +495,7 @@
       
   <xacro:joint_ros2_control name="j0" initial_pos="0.0"/>   
   <xacro:joint_ros2_control name="j1" initial_pos="0.0"/>   
-  <xacro:joint_ros2_control name="j2" initial_pos="$(arg pos_j2)"/>   
+  <xacro:joint_ros2_control name="j2" initial_pos="2.0"/>   
   <xacro:joint_ros2_control name="j3" initial_pos="0.0"/>   
 </ros2_control>
  
