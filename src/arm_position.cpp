@@ -107,7 +107,7 @@ int main(int argc, char * argv[])
 	while (1) {
 			publisher->publish(command);
 			RCLCPP_INFO(node->get_logger(), "sending: [%s]", oss.str().c_str());
-			std::this_thread::sleep_for(50ms);
+			std::this_thread::sleep_for(100ms);
 			rclcpp::spin_some(node);
 	}
 

@@ -76,7 +76,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="3.41992001" ixy="0.0" ixz="0.0" iyy="2.85587836" iyz="0.0" izz="5.84313870"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
   
@@ -102,7 +102,7 @@
     </collision>
      <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
     </inertial>
   </link>
   
@@ -142,7 +142,7 @@
     </collision>
      <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
     </inertial>
   </link>
   
@@ -167,7 +167,7 @@
     </collision>
      <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
     </inertial>
   </link>
   
@@ -234,7 +234,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
     </inertial>
   </link>
   
@@ -275,7 +275,7 @@
     
      <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
     </inertial>
   </link>
   
@@ -301,7 +301,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
     </inertial>
   </link>
  
@@ -342,7 +342,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
     </inertial>
   </link>
     
@@ -371,7 +371,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
     </inertial>
   </link>
   
@@ -401,7 +401,7 @@
     
     <inertial>
       <mass value="0.1"/>
-      <inertia ixx="6.90013881e-03" ixy="0.0" ixz="0.0" iyy="1.24554875e-02" iyz="0.0" izz="1.04295793e-02"/>
+      <inertia ixx="6.90013881e-05" ixy="0.0" ixz="0.0" iyy="1.24554875e-04" iyz="0.0" izz="1.04295793e-04"/>
     </inertial>
   </link>
 
@@ -487,7 +487,7 @@
   <xacro:arg name="pos_j2" default="2.0"/>
 
 <!--Install with sudo apt install ros-humble-ign-ros2-control-->
-<ros2_control name="GazeboSystem" type="system">
+<ros2_control name="IgnitionSystem" type="system">
 
   <hardware>
     <plugin>ign_ros2_control/IgnitionSystem</plugin> 

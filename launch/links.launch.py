@@ -46,7 +46,7 @@ def generate_launch_description():
     )  
 
     robot_state_publisher_node_links = Node(
-        package="robot_state_publisher",
+        package="robot_state_publisher", ros2 run rorobot_state_publisher robot_state_publisher
         executable="robot_state_publisher",
         output="both",
         parameters=[robot_description_links,
