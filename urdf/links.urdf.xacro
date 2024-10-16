@@ -2,7 +2,19 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="arm">
 
-  <link name="world_link">
+  <xacro:macro name="cylinder_inertial" params="radius length mass *origin">
+    <inertial>
+      <mass value="${mass}" />
+      <xacro:insert_block name="origin" />
+      <inertia ixx="${0.0833333 * mass * (3 * radius *
+      radius + length * length)}" ixy="0.0" ixz="0.0"
+      iyy="${0.0833333 * mass * (3 * radius * radius +
+      length * length)}" iyz="0.0"
+      izz="${0.5 * mass * radius * radius}" />
+    </inertial>
+  </xacro:macro>
+
+    <link name="world_link">
     <visual>
       <geometry>
           <box size="0.1 0.1 0.1" /> 
@@ -18,7 +30,7 @@
     </inertial> 
     <collision>
       <geometry>
-          <box size="0.1 0.1 0.1" /> 
+        <box size="0.1 0.1 0.1" /> 
       </geometry>
       <origin rpy="0 0 0.5" xyz="0 0 0"/>
       <material name="green">
@@ -82,18 +94,35 @@
   </link>
 
 
-   <!--
-    <xacro:arg name="mass" default="20"/>
-    <xacro:property name="mass" value="10"/> Acces to the data using ${mass} between the 
-    
-    
-    <xacro:arg name="initial_pos" default="$(find arm_description)/config/initial_pos.yaml"/>
+ <joint name="j2" type="revolute">
+    <parent link="link2"/>
+    <child link="link3"/>
+    <origin xyz="0 0 0.2"/>  
+    <axis xyz="0 1 0" />
+    <limit effort="300" velocity="0.1" lower="-2.57" upper="2.57"/>
+  </joint>
+
+
+ <link name="link3">
+    <visual>
+      <geometry>
+          <cylinder length="0.2" radius="0.05"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.1"/>  
+    </visual> 
+     <xacro:cylinder_inertial radius="0.1" length="0.2" mass="0.3">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      </xacro:cylinder_inertial>
+  </link>
+
+<!--     <xacro:arg name="mass" default="20"/>
+    <xacro:property name="mass" value="10"/>
+ 
+     <xacro:arg name="initial_pos" default="$(find arm_description)/config/initial_pos.yaml"/>
 
     <xacro:property name="config_joint_limit_parameters" value="${xacro.load_yaml(initial_pos)}"/>
 
-    <xacro:property name="sec_limits" value="${config_joint_limit_parameters['j0']}"/>-->
-   
-
-
+    <xacro:property name="sec_limits" value="${config_joint_limit_parameters['j0']}"/>
+    -->
 
 </robot>
