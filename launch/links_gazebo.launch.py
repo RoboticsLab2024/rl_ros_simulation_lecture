@@ -16,16 +16,16 @@ def generate_launch_description():
 
     declared_arguments = [] 
  
-    arm_description_path = get_package_share_directory('links_urdf')
+    arm_description_path = get_package_share_directory('iiwa_description')
 
-    urdf_example_lesson = os.path.join(arm_description_path, "urdf", "links.urdf")
-    urdf_example_lesson_xacro = os.path.join(arm_description_path, "urdf", "links.urdf.xacro")
+    #urdf_example_lesson = os.path.join(arm_description_path, "urdf", "links.urdf")
+    urdf_example_lesson_xacro = os.path.join(arm_description_path, "urdf", "iiwa.urdf.xacro")
 
 
-    with open(urdf_example_lesson, 'r') as infp:
+    """with open(urdf_example_lesson, 'r') as infp:
         arm_desc = infp.read()
 
-    robot_description_links = {"robot_description": arm_desc}
+    robot_description_links = {"robot_description": arm_desc}"""
 
     r_d_x = {"robot_description":Command(['xacro ', urdf_example_lesson_xacro])}
 
@@ -38,7 +38,7 @@ def generate_launch_description():
         package="robot_state_publisher", #ros2 run robot_state_publisher robot_state_publisher
         executable="robot_state_publisher",
         output="both",
-        parameters=[robot_description_links,
+        parameters=[r_d_x,
                     {"use_sim_time": True},
             ],
         remappings=[('/robot_description', '/robot_description')]
