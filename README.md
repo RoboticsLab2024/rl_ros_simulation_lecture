@@ -36,19 +36,16 @@ In another terminal, open rqt. You can check the TF tree published by the robot_
 
 and the ros2 computational graph:
 
-<img src="images/graph.png" alt="Description of the image" width="350"/>
+<img src="images/graph.png" alt="Description of the image" width="550"/>
 
 From there, you can see how the robot_state_publisher is publishing both the transformations and the robot_description
 
 
 
-Now type
+Spawn the robot in Gazebo using the *create* node:
 ```
 ros2 launch links_urdf links_gazebo.launch.py
 ```
-
-
-
 
 
 
