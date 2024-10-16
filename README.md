@@ -24,19 +24,31 @@ colcon build --packages-select links_urdf
 
 Launch robot-state-publisher, joint-state-publisher and rviz2 with:
 ```
-ros2 launch links_urdf
+ros2 launch links_urdf links.launch.py
 ```
 
 <img src="images/rviz_1.png" alt="Description of the image" width="400"/>
-If you have launched the joint-state-publisher-gui, a slider bar will appear to move the joints. (This package may need to be installed.)
+If you have launched the joint-state-publisher-gui, a slider bar will appear to move the joints. (This package may need to be installed)
 
-On another terminal open rqt. You can check both the tf_tree published by the robot_state_publisher 
+In another terminal, open rqt. You can check the TF tree published by the robot_state_publisher.
 
 <img src="images/tf_tree.png" alt="Description of the image" width="450"/>
 
 and the ros2 computational graph:
+
 <img src="images/graph.png" alt="Description of the image" width="350"/>
 
-from which you can see how the robot-state-publisher is publishing bot the transformation and the robot_description
+From there, you can see how the robot_state_publisher is publishing both the transformations and the robot_description
+
+
+
+Now type
+```
+ros2 launch links_urdf links_gazebo.launch.py
+```
+
+
+
+
 
 
