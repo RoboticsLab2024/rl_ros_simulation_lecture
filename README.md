@@ -72,7 +72,7 @@ From there, you can see how the robot_state_publisher is publishing both the tra
 
 
 
-Spawn the robot in Gazebo using the *create* node:
+In the links_gazebo.launch.py file, two nodes have been added to launch Gazebo (by calling its specific ROS launch file) and one node to spawn the robot.
 ```
 ros2 launch links_urdf links_gazebo.launch.py
 ```
