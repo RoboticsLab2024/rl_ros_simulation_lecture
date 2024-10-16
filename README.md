@@ -1,11 +1,5 @@
 # ROS 2 SIMULATION 16/10/2024
 
-## Overview
-Brief description of your project.
-```bash
-git clone 
-```
-
 ## USAGE
 Add within your cmake:
 ```
