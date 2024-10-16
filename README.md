@@ -30,6 +30,8 @@ sudo apt-get install ros-<distro>joint-state-publisher-gui
 If you are running this command inside a container, and haven't updated the package manager yet, type
 ```
 sudo apt-get upgrade
+```
+```
 sudo apt-get update
 ```
 Joint-state-publisher-gui will make appear a sliding window by which you can change the configuration of the robot. 
@@ -44,6 +46,8 @@ ros2 topic echo /joint_states
 Remember that you can use the following commands to display all the nodes and topic
 ```
 ros2 topic list
+```
+```
 ros2 node list
 ```
 
