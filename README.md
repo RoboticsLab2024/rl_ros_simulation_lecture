@@ -22,7 +22,30 @@ ros2 launch links_urdf links.launch.py
 ```
 
 <img src="images/rviz_1.png" alt="Description of the image" width="400"/>
-If you have launched the joint-state-publisher-gui, a slider bar will appear to move the joints. (This package may need to be installed)
+If you have launched the joint-state-publisher-gui, a slider bar will appear to move the joints. 
+If you haven't installed it yet, launch in your terminal
+```
+sudo apt-get install ros-<distro>joint-state-publisher-gui
+```
+If you are running this command inside a container, and haven't updated the package manager yet, type
+```
+sudo apt-get upgrade
+sudo apt-get update
+```
+Joint-state-publisher-gui will make appear a sliding window by which you can change the configuration of the robot. 
+
+<img src="images/jsp_gui.png" alt="Description of the image" width="450"/>
+
+Is possible to read the joints configuration from the /joint_states topic
+```
+ros2 topic echo /joint_states
+```
+
+Remember that you can use the following commands to display all the nodes and topic
+```
+ros2 topic list
+ros2 node list
+```
 
 In another terminal, open rqt. You can check the TF tree published by the robot_state_publisher.
 

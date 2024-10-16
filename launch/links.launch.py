@@ -20,23 +20,23 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "rviz_config_file", #this will be the name of the argument  
             default_value=PathJoinSubstitution(
-                [FindPackageShare("arm_description"), "config", "rviz", "links.rviz"]
+                [FindPackageShare("links_urdf"), "config", "rviz", "links.rviz"]
             ),
             description="RViz config file (absolute path) to use when launching rviz.",
         )
     )
 
 
-    arm_description_path = get_package_share_directory('arm_description')
+    links_urdf_path = get_package_share_directory('links_urdf')
 
-    urdf_example_lesson = os.path.join(arm_description_path, "urdf", "links.urdf")
-    urdf_example_lesson_xacro = os.path.join(arm_description_path, "urdf", "links.urdf.xacro")
+    urdf_example_lesson = os.path.join(links_urdf_path, "urdf", "links.urdf")
+    urdf_example_lesson_xacro = os.path.join(links_urdf_path, "urdf", "links.urdf.xacro")
 
 
     with open(urdf_example_lesson, 'r') as infp:
-        arm_desc = infp.read()
+        link_desc = infp.read()
 
-    robot_description_links = {"robot_description": arm_desc}
+    robot_description_links = {"robot_description": link_desc}
 
     r_d_x = {"robot_description":Command(['xacro ', urdf_example_lesson_xacro])}
 
