@@ -23,6 +23,7 @@ ros2 launch links_urdf links.launch.py
 
 
 if you haven't saved any configuration as .rviz file, in order to see your model inside rviz you have to add the RoborModel plugin
+
 <img src="images/RobotModelRviz.png" alt="Description of the image" width="450"/>
 
 Then you must change the fixed frame to one of the available options for your robot. Finally, select /robot_description in the Description topic window and your roboot should appear
