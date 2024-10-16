@@ -47,7 +47,7 @@ Spawn the robot in Gazebo using the *create* node:
 ros2 launch links_urdf links_gazebo.launch.py
 ```
 
-#Exercise
+# Exercise
 
 * Download the iiwa_description package from [iiwa repository](https://github.com/ICube-Robotics/iiwa_ros2/tree/main)
 * Create a launch file to spawn the Iiwa in Gazebo (you just need to change the paths inside the launch file provided in this repo) 
