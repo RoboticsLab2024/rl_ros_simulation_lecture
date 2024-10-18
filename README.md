@@ -20,19 +20,8 @@ Launch robot-state-publisher, joint-state-publisher and rviz2 with:
 ```
 ros2 launch links_urdf links.launch.py
 ```
-
-
-if you haven't saved any configuration as .rviz file, in order to see your model inside rviz you have to add the RoborModel plugin
-
-<img src="images/RobotModelRviz.png" alt="Description of the image" width="450"/>
-
-Then you must change the fixed frame to one of the available options for your robot. Finally, select /robot_description in the Description topic window and your roboot should appear
-
-<img src="images/rviz_1.png" alt="Description of the image" width="400"/>
-
-
 If you have launched the joint-state-publisher-gui, a slider bar will appear to move the joints. 
-If you haven't installed it yet, launch in your terminal
+If you haven't installed it yet, type in your terminal
 ```
 sudo apt-get install ros-<distro>joint-state-publisher-gui
 ```
@@ -43,6 +32,16 @@ sudo apt-get upgrade
 ```
 sudo apt-get update
 ```
+
+if you haven't saved any configuration as .rviz file, in order to see your model inside rviz you have to add the RoborModel plugin
+
+<img src="images/RobotModelRviz.png" alt="Description of the image" width="450"/>
+
+Then you must change the fixed frame to one of the available options for your robot. Finally, select /robot_description in the Description topic window and your roboot should appear
+
+<img src="images/rviz_1.png" alt="Description of the image" width="400"/>
+
+
 Joint-state-publisher-gui will make appear a sliding window by which you can change the configuration of the robot. 
 
 <img src="images/jsp_gui.png" alt="Description of the image" width="450"/>
