@@ -23,7 +23,7 @@ ros2 launch links_urdf links.launch.py
 If you have launched the joint-state-publisher-gui, a slider bar will appear to move the joints. 
 If you haven't installed it yet, type in your terminal
 ```
-sudo apt-get install ros-<distro>joint-state-publisher-gui
+sudo apt-get install ros-<distro>-joint-state-publisher-gui
 ```
 If you are running this command inside a container, and haven't updated the package manager yet, type
 ```
@@ -32,6 +32,7 @@ sudo apt-get upgrade
 ```
 sudo apt-get update
 ```
+In any case, you could launch the joint-state-publisher, which should be installed automatically, but you won't see the sliding bar.
 
 if you haven't saved any configuration as .rviz file, in order to see your model inside rviz you have to add the RoborModel plugin
 
